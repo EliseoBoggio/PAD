@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Municipalidad.Api.Domain.Models;
@@ -18,7 +19,15 @@ public class DatabaseInitializer : IHostedService
     {
         using var scope = _serviceProvider.CreateScope();
         var context = scope.ServiceProvider.GetRequiredService<MunicipalidadDbContext>();
-        await context.Database.MigrateAsync(cancellationToken);
+        var hasMigrations = (await context.Database.GetMigrationsAsync(cancellationToken)).Any();
+        if (hasMigrations)
+        {
+            await context.Database.MigrateAsync(cancellationToken);
+        }
+        else
+        {
+            await context.Database.EnsureCreatedAsync(cancellationToken);
+        }
 
         if (!await context.Titulares.AnyAsync(cancellationToken))
         {

@@ -17,13 +17,15 @@ Solución de referencia para la municipalidad con ASP.NET Core Web API.
 ## Configuración
 
 1. Ajuste los valores de `appsettings.json` con las URLs y credenciales reales de los servicios externos (DNRPA, ARCA, Pago Fácil, MercadoPago) y la clave JWT.
-2. Ejecute las migraciones y semillas:
+2. Opcionalmente, ejecute las migraciones y semillas de forma manual:
 
    ```bash
    dotnet tool restore
    dotnet ef database update --project Municipalidad.Api/Municipalidad.Api.csproj
    sqlite3 municipalidad.db < Municipalidad.Api/Scripts/seed.sql
    ```
+
+   > Si omite este paso, el `DatabaseInitializer` creará la base de datos y aplicará las migraciones pendientes al iniciar la API.
 
 3. Inicie la API:
 

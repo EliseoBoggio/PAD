@@ -1,0 +1,138 @@
+﻿<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <title>Municipalidad - Impuesto Vehicular</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+    <header class="topbar">
+        <div class="logo">Municipalidad</div>
+        <nav class="nav">
+            <button data-section="home" class="nav-btn nav-btn--active">Inicio</button>
+            <button data-section="consulta" class="nav-btn">Consulta y Pago</button>
+            <button data-section="historial" class="nav-btn">Historial</button>
+        </nav>
+    </header>
+
+    <main>
+        <!-- HOME -->
+        <section id="home" class="section section--active">
+            <div class="card home-card">
+                <h1 class="home-title">MUNICIPALIDAD</h1>
+                <p class="home-subtitle">
+                    Sistema de gestión de Impuesto a los Vehículos que integra información de DNRPA,
+                    genera obligaciones mensuales para cada titular y permite el pago de tributos
+                    mediante Pago Fácil y Mercado Pago, simulando el circuito completo de recaudación municipal.
+                </p>
+                <div class="home-button-wrapper">
+                    <button id="go-to-consulta" class="btn-primary">
+                        Ir a Consulta y Pago
+                    </button>
+                </div>
+            </div>
+        </section>
+        <!-- CONSULTA Y PAGO -->
+        <section id="consulta" class="section">
+            <div class="card card--compact">
+                <h3 style="margin-bottom:0.4rem;">Importar por rango</h3>
+
+                <form id="form-rango" class="form-row compact-form">
+                    <input type="date" id="rng-desde" required />
+                    <input type="date" id="rng-hasta" required />
+                    <button type="submit" class="btn-secondary btn-sm">Importar</button>
+                </form>
+
+                <div id="resultado-rango" class="messages compact-messages"></div>
+            </div>
+            <div class="layout-two">
+                <!-- Columna izquierda: búsqueda de owners -->
+                <div class="card">
+                    <h2>Búsqueda de Titulares (Owners DNRPA)</h2>
+                    <p class="muted">
+                        Buscá por nombre o CUIT/CUIL. Los titulares y vehículos provienen de los
+                        eventos importados desde DNRPA.
+                    </p>
+                    <form id="owner-search-form" class="form-row">
+                        <input type="text" id="owner-search-input" placeholder="Ej: Juan / 20123456789" />
+                        <button type="submit" class="btn-secondary">Buscar</button>
+                        <button type="button" id="owner-search-clear" class="btn-ghost">Limpiar</button>
+                    </form>
+
+                    <div id="owner-list" class="list">
+                        <!-- Se llena por JS -->
+                    </div>
+                </div>
+
+                <!-- Columna derecha: detalle + generación y pago -->
+                <div class="card">
+                    <h2>Detalle y Pago</h2>
+                    <p class="muted">
+                        Seleccioná un titular y un vehículo para generar la obligación y emitir la factura del período.
+                    </p>
+
+                    <div id="selected-owner-box" class="info-box info-box--empty">
+                        <p class="muted">Ningún titular seleccionado.</p>
+                    </div>
+
+                    <form id="emit-form" class="form-column">
+                        <label>
+                            Período (YYYYMM)
+                            <input type="text" id="emit-periodo" placeholder="202511" maxlength="6" />
+                        </label>
+                        <button type="submit" class="btn-primary" disabled id="emit-btn">
+                            Generar / Emitir factura
+                        </button>
+                    </form>
+
+                    <div id="invoice-summary" class="info-box info-box--empty">
+                        <!-- Resumen de factura se llena por JS -->
+                    </div>
+
+                    <div class="pay-actions">
+                        <button id="mp-pay-btn" class="btn-primary" disabled>
+                            Pagar con Mercado Pago
+                        </button>
+                        <button id="pf-pdf-btn" class="btn-secondary" disabled>
+                            Descargar Cupón Pago Fácil (PDF)
+                        </button>
+                    </div>
+
+                    <div id="consulta-messages" class="messages"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- HISTORIAL -->
+        <section id="historial" class="section">
+            <div class="card">
+                <h2>Historial de Pagos</h2>
+                <p class="muted">
+                    Muestra los últimos pagos registrados, tanto por Mercado Pago como por Pago Fácil.
+                </p>
+                <button id="hist-load-btn" class="btn-secondary">Cargar historial</button>
+                <div id="hist-messages" class="messages"></div>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Fecha</th>
+                                <th>Proveedor</th>
+                                <th>Monto</th>
+                                <th>Periodo</th>
+                                <th>Patente</th>
+                            </tr>
+                        </thead>
+                        <tbody id="hist-table-body">
+                            <!-- Filas vía JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="app.js"></script>
+</body>
+</html>
